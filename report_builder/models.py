@@ -79,6 +79,7 @@ class Report(models.Model):
         AUTH_USER_MODEL, blank=True,
         help_text="These users have starred this report for easy reference.",
         related_name="report_starred_set")
+    general_report = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -229,7 +230,7 @@ class Report(models.Model):
         )
     edit.allow_tags = True
 
-    def download_xlsx(self):
+    def download_file(self):
         if getattr(settings, 'REPORT_BUILDER_ASYNC_REPORT', False):
             return mark_safe(
                 '<a href="javascript:void(0)" onclick="get_async_report({0})"><img style="width: 26px; margin: -6px" src="{1}report_builder/img/download.svg"/></a>'.format(
@@ -240,12 +241,12 @@ class Report(models.Model):
         else:
             return mark_safe(
                 '<a href="{0}"><img style="width: 26px; margin: -6px" src="{1}report_builder/img/download.svg"/></a>'.format(
-                    reverse('report_download_xlsx', args=[self.id]),
+                    reverse('report_download_file', args=[self.id, 'csv']),
                     getattr(settings, 'STATIC_URL', '/static/'),
                 )
             )
-    download_xlsx.short_description = "Download"
-    download_xlsx.allow_tags = True
+    download_file.short_description = "Download"
+    download_file.allow_tags = True
 
     def copy_report(self):
         return '<a href="{0}"><img style="width: 26px; margin: -6px" src="{1}report_builder/img/copy.svg"/></a>'.format(

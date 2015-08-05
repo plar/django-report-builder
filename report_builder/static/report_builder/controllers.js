@@ -14,6 +14,7 @@ reportBuilderApp.controller('addCtrl', function($scope, $location, reportService
 reportBuilderApp.controller('homeCtrl', function($scope, $routeParams, $location, $mdSidenav, reportService) {
   $scope.static = static;
   $scope.ASYNC_REPORT = ASYNC_REPORT;
+  $scope.ADMIN_REPORT_URL = ADMIN_REPORT_URL;
   $scope.reportData = {};
   reportService.filterFieldOptions().then(function(options) {
     $scope.filterFieldOptions = options.actions.POST;
@@ -148,15 +149,19 @@ reportBuilderApp.controller('LeftCtrl', function($scope, $routeParams, $mdSidena
   $scope.reports = reportService.getList().$object;
   $scope.reportOrder = "name";
   $scope.reverseReportOrder = false;
-  
+
   $scope.currentUserFilter = function(report) {
     return ( report.user_created.id == CURRENT_USER );
   };
-  
+
   $scope.notCurrentUserFilter = function(report) {
     return !( $scope.currentUserFilter(report) );
   };
-  
+
+  $scope.generalReportFilter = function(report) {
+    return ( report.general_report == true );
+  };
+
   $scope.close = function() {
     $mdSidenav('left').close();
   };

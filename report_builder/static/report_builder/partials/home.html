@@ -3,7 +3,7 @@
     <md-sidenav class="fullheight md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-lg')">
       <md-content style="height: 100%; overflow-y: auto;">
         <md-toolbar md-scroll-shrink>
-          <h1 class="md-toolbar-tools">Reports</h1>
+          <h1 class="md-toolbar-tools"><a href="{{ ADMIN_REPORT_URL }}" target="_blank">Reports</a></h1>
         </md-toolbar>
         <md-content ng-controller="LeftCtrl">
           <md-content class="md-padding">
@@ -54,10 +54,10 @@
             </md-item>
           </md-list>
           <md-content layout-align="center center" layout="row">
-            <h5>All Reports</h5>
+            <h5>General Reports</h5>
           </md-content>
           <md-list>
-            <md-item ng-repeat="report in reports | filter:searchReports | filter:notCurrentUserFilter | orderBy:reportOrder:reverseReportOrder">
+            <md-item ng-repeat="report in reports | filter:searchReports | filter:generalReportFilter | orderBy:reportOrder:reverseReportOrder">
               <md-item-content>
                 <md-button layout-fill ng-click="openReport(report.id)" class="sidenav-report-link md-primary">
                   <div layout="column" layout-align="center start">
@@ -79,7 +79,7 @@
           </md-list>
         </md-content>
       </md-content>
-      
+
     </md-sidenav>
     <div class="fullheight" flex="">
       <md-toolbar class="md-theme-indigo">

@@ -36,7 +36,7 @@ function check_if_report_done(report_id, task_id) {
 	}
 }
 function get_async_report(report_id) {
-	$.get( "/report_builder/report/"+ report_id + "/download_xlsx/", function( data ) {
+	$.get( "/report_builder/report/"+ report_id + "/download_file/csv", function( data ) {
 	var task_id = data.task_id;
 	status = "loading"
 	check_report = setInterval( function(){ check_if_report_done(report_id, task_id); }, 2000 );

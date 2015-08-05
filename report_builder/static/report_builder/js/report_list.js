@@ -73,3 +73,28 @@ function ajax_add_star(event, url) {
 	    }
         }
     );}
+
+function ajax_toggle_general_report(event, url) {
+
+    // Setup CSRF Token
+    var csrftoken = getCookie('csrftoken');
+    $.ajaxSetup({
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    $.post(
+        url,
+    {},
+        function(data){
+        if (data == 'True' ) {
+        $(event).html('<img style="" src="/static/admin/img/icon-yes.gif">');
+        } else {
+        $(event).html('<img style="" src="/static/admin/img/icon-no.gif">');
+        }
+        }
+    );}

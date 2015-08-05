@@ -54,10 +54,12 @@
                 </ul>
             </div>
         </div>
-        <div class="fullheight" style="width:100%; overflow: auto" ng-if="reportData.refresh == false">
+        <div class="fullheight" style="width: 100% !important; overflow: auto;" ng-if="reportData.refresh == false">
             <hot-table id="previewTable"
                 columnHeaders="true"
                 settings="htSettings"
+                manualColumnResize="true"
+                stretchH="all"
                 columns="reportData.columns"
                 datarows="reportData.items"
                 >

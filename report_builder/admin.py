@@ -22,13 +22,26 @@ class StarredFilter(SimpleListFilter):
         if self.value() == 'Starred':
             return queryset.filter(starred=request.user)
 
+class GeneralReportFilter(SimpleListFilter):
+    title = 'General reports'
+    parameter_name = 'general_report'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('General', 'General Reports'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'General':
+            return queryset.filter(general_report=True)
+
 
 class ReportAdmin(admin.ModelAdmin):
-    list_display = ('ajax_starred', 'edit', 'name', 'description', 'root_model', 'created', 'modified', 'user_created', 'download_xlsx', 'copy_report',)
+    list_display = ('ajax_starred', 'ajax_general_report', 'edit', 'name', 'description', 'root_model', 'created', 'modified', 'user_created', 'download_file', 'copy_report',)
     readonly_fields = ['slug', ]
     fields = ['name', 'description', 'root_model', 'slug']
     search_fields = ('name', 'description')
-    list_filter = (StarredFilter, 'root_model', 'created', 'modified', 'root_model__app_label')
+    list_filter = (StarredFilter, GeneralReportFilter, 'root_model', 'created', 'modified', 'root_model__app_label')
     list_display_links = []
     show_save = False
 
@@ -66,6 +79,17 @@ class ReportAdmin(admin.ModelAdmin):
             img)
     ajax_starred.allow_tags = True
     ajax_starred.short_description = "Starred"
+
+    def ajax_general_report(self, obj):
+        if obj.general_report:
+            img = static_url + 'admin/img/icon-yes.gif'
+        else:
+            img = static_url + 'admin/img/icon-no.gif'
+        return '<a href="javascript:void(0)" onclick="ajax_toggle_general_report(this, \'{0}\')"><img style="" src="{1}"/></a>'.format(
+            reverse('report_builder.views.ajax_toggle_general_report', args=[obj.id]),
+            img)
+    ajax_general_report.allow_tags = True
+    ajax_general_report.short_description = "General"
 
     def save_model(self, request, obj, form, change):
         star_user = False

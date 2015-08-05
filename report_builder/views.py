@@ -179,6 +179,16 @@ def ajax_add_star(request, pk):
 
 
 @staff_member_required
+def ajax_toggle_general_report(request, pk):
+    """ Toggle General Report
+    """
+    report = get_object_or_404(Report, pk=pk)
+    report.general_report = not report.general_report
+    report.save()
+    return HttpResponse(report.general_report)
+
+
+@staff_member_required
 def create_copy(request, pk):
     """ Copy a report including related fields """
     report = get_object_or_404(Report, pk=pk)

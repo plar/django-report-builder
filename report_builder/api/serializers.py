@@ -46,7 +46,7 @@ class ReportSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Report
         fields = ('id', 'name', 'modified', 'root_model', 'root_model_name',
-                  'user_created')
+                  'user_created', 'general_report')
 
 
 class ReportNestedSerializer(ReportSerializer):
