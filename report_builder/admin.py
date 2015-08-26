@@ -23,16 +23,16 @@ class StarredFilter(SimpleListFilter):
             return queryset.filter(starred=request.user)
 
 class GeneralReportFilter(SimpleListFilter):
-    title = 'General reports'
+    title = 'Permanent reports'
     parameter_name = 'general_report'
 
     def lookups(self, request, model_admin):
         return (
-            ('General', 'General Reports'),
+            ('Permanent', 'Permanent Reports'),
         )
 
     def queryset(self, request, queryset):
-        if self.value() == 'General':
+        if self.value() == 'Permanent':
             return queryset.filter(general_report=True)
 
 
@@ -89,7 +89,7 @@ class ReportAdmin(admin.ModelAdmin):
             reverse('report_builder.views.ajax_toggle_general_report', args=[obj.id]),
             img)
     ajax_general_report.allow_tags = True
-    ajax_general_report.short_description = "General"
+    ajax_general_report.short_description = "Permanent"
 
     def save_model(self, request, obj, form, change):
         star_user = False
