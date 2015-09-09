@@ -1,6 +1,6 @@
 from django.contrib.contenttypes.models import ContentType
 from django.core import mail
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.test import TestCase
 from .models import Report, DisplayField, FilterField, Format, get_allowed_models
 from .views import email_report
@@ -243,7 +243,7 @@ class ReportTests(TestCase):
         ct = ContentType.objects.get(model="bar", app_label="demo_models")
         self.report = Report.objects.create(root_model=ct, name="A")
         self.bar = Bar.objects.create(char_field="wooo")
-        self.generate_url = reverse('generate_report', args=[self.report.id])
+        self.generate_url = reverse_lazy('generate_report', args=[self.report.id])
 
     def test_property_display(self):
         DisplayField.objects.create(
@@ -464,7 +464,7 @@ class ReportTests(TestCase):
             total=True,
         )
 
-        generate_url = reverse('generate_report', args=[report.id])
+        generate_url = reverse_lazy('generate_report', args=[report.id])
         response = self.client.get(generate_url)
 
         self.assertContains(response, '["TOTALS",""],[22.0,21.0]')
@@ -546,7 +546,7 @@ class ReportTests(TestCase):
             total=True,
         )
 
-        generate_url = reverse('generate_report', args=[report.id])
+        generate_url = reverse_lazy('generate_report', args=[report.id])
         response = self.client.get(generate_url)
 
         data = '"data":[[1,"John","Doe",3],[3,"Donald","King",6],[2,"Maria","Smith",2],["TOTALS","","",""],["","","",11.0]]'
@@ -600,7 +600,7 @@ class ReportTests(TestCase):
             total=True,
         )
 
-        generate_url = reverse('generate_report', args=[report.id])
+        generate_url = reverse_lazy('generate_report', args=[report.id])
         response = self.client.get(generate_url)
 
         data = '"data":[[1,"John","Doe",3],[3,"Donald","King",6],[2,"Maria","Smith",2],["TOTALS","","",""],["","",3.0,11.0]]'
@@ -669,7 +669,7 @@ class ReportTests(TestCase):
             aggregate='Sum',
         )
 
-        generate_url = reverse('generate_report', args=[report.id])
+        generate_url = reverse_lazy('generate_report', args=[report.id])
         response = self.client.get(generate_url)
 
         data = '"data":[["Donald","King",7,2,4.2,21],["John","Doe",8,3,5.333333333333333,16],["Maria","Smith",4,1,2.5,5],["Paul","Nelson",null,null,null,null]]'
@@ -723,7 +723,7 @@ class ReportTests(TestCase):
             filter_value='Donald',
         )
 
-        generate_url = reverse('generate_report', args=[report.id])
+        generate_url = reverse_lazy('generate_report', args=[report.id])
         response = self.client.get(generate_url)
 
         data = '"data":[["Donald","King",null,""],["Donald","King",7,"Green"],["Donald","King",3,"Red"],["Donald","King",4,"Red"],["Donald","King",5,"Red"],["Donald","King",2,"Y"]]'
@@ -773,7 +773,7 @@ class ReportTests(TestCase):
             filter_value='Maria',
         )
 
-        generate_url = reverse('generate_report', args=[report.id])
+        generate_url = reverse_lazy('generate_report', args=[report.id])
         response = self.client.get(generate_url)
 
         data = '"data":[["Karen","Smith","4 years old"],["Susan","Smith","1 years old"],["TOTALS","",""],["","","5 years old"]]'
@@ -816,7 +816,7 @@ class ReportTests(TestCase):
         )
 
         settings.REPORT_BUILDER_ASYNC_REPORT = False
-        download_csv = reverse('report_download_file', args=[report.id, 'csv'])
+        download_csv = reverse_lazy('report_download_file', args=[report.id, 'csv'])
         response = self.client.get(download_csv)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response._headers['content-type'][1], 'text/csv')
@@ -930,7 +930,7 @@ class ReportTests(TestCase):
             filter_value='True',
         )
 
-        generate_url = reverse('generate_report', args=[report.id])
+        generate_url = reverse_lazy('generate_report', args=[report.id])
         response = self.client.get(generate_url)
 
         data = '"data":[["John","Doe","Robert","Doe",3],["Donald","King","Mark","King",2],["Maria","Smith","Susan","Smith",1]]'
@@ -1007,7 +1007,7 @@ class ReportTests(TestCase):
             filter_value='True',
         )
 
-        generate_url = reverse('generate_report', args=[report.id])
+        generate_url = reverse_lazy('generate_report', args=[report.id])
         response = self.client.get(generate_url)
 
         data = '"data":[["John","Doe","Will","Doe",5],["Donald","King","Larry","King",5]]'

@@ -1,4 +1,7 @@
 reportBuilderApp.controller('addCtrl', function($scope, $location, reportService) {
+  $scope.CURRENT_USER = CURRENT_USER;
+  $scope.PERMS = PERMS;
+
   reportService.options().then(function(options) {
     $scope.options = options.actions.POST;
   });
@@ -15,6 +18,8 @@ reportBuilderApp.controller('homeCtrl', function($scope, $routeParams, $location
   $scope.static = static;
   $scope.ASYNC_REPORT = ASYNC_REPORT;
   $scope.ADMIN_REPORT_URL = ADMIN_REPORT_URL;
+  $scope.CURRENT_USER = CURRENT_USER;
+  $scope.PERMS = PERMS;
   $scope.reportData = {};
   reportService.filterFieldOptions().then(function(options) {
     $scope.filterFieldOptions = options.actions.POST;
@@ -50,10 +55,14 @@ reportBuilderApp.controller('homeCtrl', function($scope, $routeParams, $location
   };
 
   $scope.openReport = function(reportId) {
+    $scope.CURRENT_USER = CURRENT_USER;
+    $scope.PERMS = PERMS;
     $scope.showFields = true;
     $location.path('/report/' + reportId, false);
     reportService.getReport(reportId).then(function(report) {
       $mdSidenav('left').close();
+      $scope.CURRENT_USER = CURRENT_USER;
+      $scope.PERMS = PERMS;
       $scope.fields_header = report.root_model_name;
       $scope.report = report;
       $scope.report.lastSaved = null;
@@ -149,6 +158,8 @@ reportBuilderApp.controller('LeftCtrl', function($scope, $routeParams, $mdSidena
   $scope.reports = reportService.getList().$object;
   $scope.reportOrder = "name";
   $scope.reverseReportOrder = false;
+  $scope.CURRENT_USER = CURRENT_USER;
+  $scope.PERMS = PERMS;
 
   $scope.currentUserFilter = function(report) {
     return ( report.user_created.id == CURRENT_USER );
@@ -171,6 +182,8 @@ reportBuilderApp.controller('LeftCtrl', function($scope, $routeParams, $mdSidena
 })
 
 reportBuilderApp.controller('FieldsCtrl', function($scope, $mdSidenav, reportService) {
+  $scope.CURRENT_USER = CURRENT_USER;
+  $scope.PERMS = PERMS;
   $scope.load_fields = function(field) {
     data = {
       "model": field.model_id,
@@ -221,18 +234,24 @@ reportBuilderApp.controller('FieldsCtrl', function($scope, $mdSidenav, reportSer
 });
 
 reportBuilderApp.controller('ReportDisplayCtrl', function($scope) {
+  $scope.CURRENT_USER = CURRENT_USER;
+  $scope.PERMS = PERMS;
   $scope.deleteField = function(field) {
     field.remove();
   };
 });
 
 reportBuilderApp.controller('ReportFilterCtrl', function($scope) {
+  $scope.CURRENT_USER = CURRENT_USER;
+  $scope.PERMS = PERMS;
   $scope.deleteField = function(field) {
     field.remove();
   };
 });
 
 reportBuilderApp.controller('ReportShowCtrl', function($scope, $window, $http, $timeout, $mdToast, reportService) {
+  $scope.CURRENT_USER = CURRENT_USER;
+  $scope.PERMS = PERMS;
   $scope.getPreview = function() {
     $scope.reportData.statusMessage = null;
     $scope.reportData.refresh = true;

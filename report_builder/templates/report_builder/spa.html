@@ -21,11 +21,42 @@
     {% if user %}
     <script>
       var CURRENT_USER = '{{ user.id }}';
+      var PERMS = {
+        report: {
+            has_add: {{ perms.report_builder.add_report|yesno:"true,false" }},
+            has_change: {{ perms.report_builder.change_report|yesno:"true,false" }},
+            has_delete: {{ perms.report_builder.delete_report|yesno:"true,false" }},
+            has_view: {{ perms.report_builder.view_report|yesno:"true,false" }},
+        },
+
+        displayfield: {
+            has_add: {{ perms.report_builder.add_displayfield|yesno:"true,false" }},
+            has_change: {{ perms.report_builder.change_displayfield|yesno:"true,false" }},
+            has_delete: {{ perms.report_builder.delete_displayfield|yesno:"true,false" }},
+            has_view: {{ perms.report_builder.view_displayfield|yesno:"true,false" }},
+        },
+
+        filterfield: {
+            has_add: {{ perms.report_builder.add_filterfield|yesno:"true,false" }},
+            has_change: {{ perms.report_builder.change_filterfield|yesno:"true,false" }},
+            has_delete: {{ perms.report_builder.delete_filterfield|yesno:"true,false" }},
+            has_view: {{ perms.report_builder.view_filterfield|yesno:"true,false" }},
+        },
+
+        format: {
+            has_add: {{ perms.report_builder.add_format|yesno:"true,false" }},
+            has_change: {{ perms.report_builder.change_format|yesno:"true,false" }},
+            has_delete: {{ perms.report_builder.delete_format|yesno:"true,false" }},
+            has_view: {{ perms.report_builder.view_format|yesno:"true,false" }},
+        },
+        is_staff: {{ user.is_staff|yesno:"true,false" }}
+      };
+
     </script>
     {% endif %}
 
-    <script src="{% static 'report_builder/app.js' %}?v=1"></script>
-    <script src="{% static 'report_builder/controllers.js' %}?v=1"></script>
+    <script src="{% static 'report_builder/app.js' %}?v=2"></script>
+    <script src="{% static 'report_builder/controllers.js' %}?v=2"></script>
 
     <link rel="stylesheet" href="{% static 'report_builder/bower_components/angular-material/angular-material.css' %}">
     <script src="{% static 'report_builder/bower_components/angular-aria/angular-aria.js' %}"></script>

@@ -1,6 +1,6 @@
 <md-content class="fullheight" ng-controller="ReportShowCtrl">
     <div>
-        <md-button ng-click="save()">Save</md-button>
+        <md-button ng-if="report.user_created == CURRENT_USER || PERMS.is_staff" ng-click="save()">Save</md-button>
         <md-button ng-click="getPreview()">Preview</md-button>
         <md-button ng-click="downloadReport('xlsx')"><a ng-href="">xlsx</a></md-button>
         <md-button ng-click="downloadReport('csv')"><a ng-href="">csv</a></md-button>

@@ -7,7 +7,7 @@
           <md-toolbar layout="row" md-scroll-shrink>
             <md-button flex="1" href=""></md-button>
             <md-button flex="1" href="/" target="_blank">Dashboard</md-button>
-            <md-button flex="1" href="{{ ADMIN_REPORT_URL }}" target="_blank">Admin Reports</md-button>
+            <md-button ng-if="PERMS.is_staff" flex="1" href="{{ ADMIN_REPORT_URL }}" target="_blank">Admin Reports</md-button>
           </md-toolbar>
         </md-toolbar>
 
@@ -33,7 +33,7 @@
             <md-item>
               <md-item-content>
                 <md-button layout-fill href="{{BASE_URL + 'report/add/'}}" class="sidenav-report-link md-accent">
-                  <div layout="column" layout-align="center center">
+                  <div ng-if="PERMS.is_staff || PERMS.report.has_add" layout="column" layout-align="center center">
                     <div>+ Add Report</div>
                   </div>
                 </md-button>
@@ -90,7 +90,7 @@
     <div class="fullheight" flex="">
       <md-toolbar class="md-theme-indigo">
         <h1 class="md-toolbar-tools">
-        <md-input-container>
+        <md-input-container flex="4">
           <label>Name</label>
           <input ng-model="report.name" class="long"></input>
         </md-input-container>

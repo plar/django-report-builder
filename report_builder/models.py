@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.utils.safestring import mark_safe
 from django.utils.functional import cached_property
@@ -46,6 +46,9 @@ def get_allowed_models():
 
 
 class Report(models.Model):
+    class Meta:
+        default_permissions = ('add', 'change', 'delete', 'view')
+
     """ A saved report with queryset and descriptive fields
     """
     def _get_model_manager(self):
@@ -241,7 +244,7 @@ class Report(models.Model):
         else:
             return mark_safe(
                 '<a href="{0}"><img style="width: 26px; margin: -6px" src="{1}report_builder/img/download.svg"/></a>'.format(
-                    reverse('report_download_file', args=[self.id, 'csv']),
+                    reverse_lazy('report_download_file', args=[self.id, 'csv']),
                     getattr(settings, 'STATIC_URL', '/static/'),
                 )
             )
@@ -250,7 +253,7 @@ class Report(models.Model):
 
     def copy_report(self):
         return '<a href="{0}"><img style="width: 26px; margin: -6px" src="{1}report_builder/img/copy.svg"/></a>'.format(
-            reverse('report_builder.views.create_copy', args=[self.id]),
+            reverse_lazy('create_copy', args=[self.id]),
             getattr(settings, 'STATIC_URL', '/static/'),
         )
     copy_report.short_description = "Copy"
@@ -266,6 +269,9 @@ class Report(models.Model):
 
 
 class Format(models.Model):
+    class Meta:
+        default_permissions = ('add', 'change', 'delete', 'view')
+
     """ A specifies a Python string format for e.g. `DisplayField`s.
     """
     name = models.CharField(max_length=50, blank=True, default='')
@@ -289,6 +295,7 @@ class AbstractField(models.Model):
     class Meta:
         abstract = True
         ordering = ['position']
+        default_permissions = ('add', 'change', 'delete', 'view')
 
     @property
     def field_type(self):

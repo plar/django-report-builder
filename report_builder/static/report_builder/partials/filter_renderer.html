@@ -2,8 +2,8 @@
   <div layout-align="center center">
     <ng-form layout="row" layout-align="center center">
       <div class="move_trash" flex="">
-        <img ui-tree-handle="" src="{{ static('report_builder/img/reorder.svg') }}"></img>
-        <img ng-click="deleteField(this)" src="{{ static('report_builder/img/delete.svg') }}"></img>
+        <img ng-if="report.user_created == CURRENT_USER || PERMS.is_staff" ui-tree-handle="" src="{{ static('report_builder/img/reorder.svg') }}"></img>
+        <img ng-if="report.user_created == CURRENT_USER || PERMS.is_staff" ng-click="deleteField(this)" src="{{ static('report_builder/img/delete.svg') }}"></img>
       </div>
       <div title="{{ field.path + field.field }}" flex="" class="caps">
         <span ng-if="field.path_verbose">({{ field.path_verbose }}) </span>

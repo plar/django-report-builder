@@ -3,6 +3,7 @@ from django.conf import settings
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.core.files.base import ContentFile
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.contrib.auth import get_user_model
 from django.template.loader import get_template
 from django.template import Context
@@ -93,7 +94,7 @@ def email_report(report_url, user):
 
 class DownloadFileView(DataExportMixin, View):
 
-    @method_decorator(staff_member_required)
+    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(DownloadFileView, self).dispatch(*args, **kwargs)
 
@@ -163,7 +164,7 @@ class DownloadFileView(DataExportMixin, View):
                 report_id, request.user.pk, file_type, to_response=True)
 
 
-@staff_member_required
+@login_required
 def ajax_add_star(request, pk):
     """ Star or unstar report for user
     """
@@ -178,7 +179,8 @@ def ajax_add_star(request, pk):
     return HttpResponse(added)
 
 
-@staff_member_required
+@login_required
+@user_passes_test(lambda u: u.is_superuser or (u.is_staff and u.has_perm('report_builder.change_report')))
 def ajax_toggle_general_report(request, pk):
     """ Toggle General Report
     """
@@ -188,7 +190,7 @@ def ajax_toggle_general_report(request, pk):
     return HttpResponse(report.general_report)
 
 
-@staff_member_required
+@login_required
 def create_copy(request, pk):
     """ Copy a report including related fields """
     report = get_object_or_404(Report, pk=pk)
@@ -247,7 +249,7 @@ class ExportToReport(DownloadFileView, TemplateView):
         return self.render_to_response(context)
 
 
-@staff_member_required
+@login_required
 def check_status(request, pk, task_id):
     """ Check if the asyncronous report is ready to download """
     from celery.result import AsyncResult

@@ -1,8 +1,10 @@
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from django.utils.functional import cached_property
 from django.conf import settings
 from rest_framework import viewsets
+from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
@@ -14,32 +16,79 @@ from report_utils.mixins import GetFieldsMixin, DataExportMixin
 import copy
 
 
+class ViewerPermission(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        if not request.user.is_authenticated():
+            return False
+
+        #print "%s ======================" % request.user
+        #print request.user.has_perms('report_builder.view_report')
+        #print request.user.get_all_permissions()
+
+        return request.user.has_perm('report_builder.view_report')
+
+
+
+class ReportEditPermission(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        if not request.user.is_authenticated():
+            return False
+
+        if request.user.is_superuser or (request.user.is_staff and request.user.has_perms(['report_builder.add_report', 'report_builder.change_report', 'report_builder.delete_report'])):  # staff user can do anything
+            return True
+
+        if request.method in permissions.SAFE_METHODS:
+            return request.user.has_perm('report_builder.view_report')
+
+        report_id = request.resolver_match.kwargs.get('pk')
+
+        try:
+            report = Report.objects.get(pk=report_id)
+            print report
+            return report.user_created == request.user
+
+        except ObjectDoesNotExist:
+            return False
+
+
 class FormatViewSet(viewsets.ModelViewSet):
+    permission_classes = (ReportEditPermission,)
+
     queryset = Format.objects.all()
     serializer_class = FormatSerializer
     pagination_class = None
 
 
 class FilterFieldViewSet(viewsets.ModelViewSet):
+    permission_classes = (ReportEditPermission,)
+
     queryset = FilterField.objects.all()
     serializer_class = FilterFieldSerializer
 
 
 class ReportViewSet(viewsets.ModelViewSet):
+    permission_classes = (ReportEditPermission,)
+
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
     pagination_class = None
 
 
 class ReportNestedViewSet(viewsets.ModelViewSet):
+    permission_classes = (ReportEditPermission,)
+
     queryset = Report.objects.all()
     serializer_class = ReportNestedSerializer
     pagination_class = None
 
     def perform_create(self, serializer):
+        print "perform_create"
         serializer.save(user_created=self.request.user)
 
     def perform_update(self, serializer):
+        print "perform_update"
         serializer.save(user_modified=self.request.user)
 
 
@@ -47,7 +96,7 @@ class RelatedFieldsView(GetFieldsMixin, APIView):
 
     """ Get related fields from an ORM model
     """
-    permission_classes = (IsAdminUser,)
+    permission_classes = (ViewerPermission,)
 
     def get_data_from_request(self, request):
         self.model = request.DATA['model']
@@ -107,7 +156,7 @@ class FieldsView(RelatedFieldsView):
 
     """ Get direct fields and properties on an ORM model
     """
-    permission_classes = (IsAdminUser,)
+    permission_classes = (ViewerPermission,)
 
     def post(self, request):
         self.get_data_from_request(request)
@@ -207,7 +256,7 @@ class FieldsView(RelatedFieldsView):
 
 
 class GenerateReport(DataExportMixin, APIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (ReportEditPermission,)
 
     def get(self, request, report_id=None):
         return self.post(request, report_id=report_id)

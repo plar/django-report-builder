@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from report_builder.models import Report, Format
 from django.conf import settings
@@ -75,7 +75,7 @@ class ReportAdmin(admin.ModelAdmin):
         else:
             img = static_url + 'report_builder/img/unstar.png'
         return '<a href="javascript:void(0)" onclick="ajax_add_star(this, \'{0}\')"><img style="width: 26px; margin: -6px;" src="{1}"/></a>'.format(
-            reverse('report_builder.views.ajax_add_star', args=[obj.id]),
+            reverse_lazy('ajax_add_star', args=[obj.id]),
             img)
     ajax_starred.allow_tags = True
     ajax_starred.short_description = "Starred"
@@ -86,7 +86,7 @@ class ReportAdmin(admin.ModelAdmin):
         else:
             img = static_url + 'admin/img/icon-no.gif'
         return '<a href="javascript:void(0)" onclick="ajax_toggle_general_report(this, \'{0}\')"><img style="" src="{1}"/></a>'.format(
-            reverse('report_builder.views.ajax_toggle_general_report', args=[obj.id]),
+            reverse_lazy('ajax_toggle_general_report', args=[obj.id]),
             img)
     ajax_general_report.allow_tags = True
     ajax_general_report.short_description = "Permanent"
@@ -114,7 +114,7 @@ def export_to_report(modeladmin, request, queryset):
     for s in selected_int:
         selected.append(str(s))
     ct = ContentType.objects.get_for_model(queryset.model)
-    return HttpResponseRedirect(reverse('export_to_report') + "?ct=%s&admin_url=%s&ids=%s" % (ct.pk, admin_url, ",".join(selected)))
+    return HttpResponseRedirect(reverse_lazy('export_to_report') + "?ct=%s&admin_url=%s&ids=%s" % (ct.pk, admin_url, ",".join(selected)))
 
 if getattr(settings, 'REPORT_BUILDER_GLOBAL_EXPORT', False):
     admin.site.add_action(export_to_report, 'Export to Report')
