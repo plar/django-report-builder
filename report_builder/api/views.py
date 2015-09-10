@@ -43,12 +43,12 @@ class ReportEditPermission(permissions.BasePermission):
             return request.user.has_perm('report_builder.view_report')
 
         report_id = request.resolver_match.kwargs.get('pk')
+        if report_id is None:
+            return request.user.has_perm('report_builder.view_report')
 
         try:
             report = Report.objects.get(pk=report_id)
-            print report
             return report.user_created == request.user
-
         except ObjectDoesNotExist:
             return False
 
@@ -84,11 +84,9 @@ class ReportNestedViewSet(viewsets.ModelViewSet):
     pagination_class = None
 
     def perform_create(self, serializer):
-        print "perform_create"
         serializer.save(user_created=self.request.user)
 
     def perform_update(self, serializer):
-        print "perform_update"
         serializer.save(user_modified=self.request.user)
 
 
