@@ -18,7 +18,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 
 urlpatterns = [
-   url(r'^report/(?P<pk>\d+)/download_file/$', permission_required('report_builder.view_report')views.DownloadFileView.as_view()), name="report_download_file"),
+   url(r'^report/(?P<pk>\d+)/download_file/$', permission_required('report_builder.view_report')(views.DownloadFileView.as_view()), name="report_download_file"),
     url('^report/(?P<pk>\d+)/download_file/(?P<filetype>.+)/$', permission_required('report_builder.view_report')(views.DownloadFileView.as_view()), name="report_download_file"),
     url('^report/(?P<pk>\d+)/check_status/(?P<task_id>.+)/$', permission_required('report_builder.view_report')(views.check_status), name="report_check_status"),
     url('^report/(?P<pk>\d+)/add_star/$', permission_required('report_builder.view_report')(views.ajax_add_star), name="ajax_add_star"),
