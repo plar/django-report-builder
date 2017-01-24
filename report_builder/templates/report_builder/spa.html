@@ -55,8 +55,8 @@
     </script>
     {% endif %}
 
-    <script src="{% static 'report_builder/app.js' %}?v=2"></script>
-    <script src="{% static 'report_builder/controllers.js' %}?v=2"></script>
+    <script src="{% static 'report_builder/app.js' %}?v=3"></script>
+    <script src="{% static 'report_builder/controllers.js' %}?v=3"></script>
 
     <link rel="stylesheet" href="{% static 'report_builder/bower_components/angular-material/angular-material.css' %}">
     <script src="{% static 'report_builder/bower_components/angular-aria/angular-aria.js' %}"></script>
@@ -70,7 +70,7 @@
 
     <script src="{% static 'report_builder/bower_components/angular-ui-tree/dist/angular-ui-tree.js' %}"></script>
     <link rel="stylesheet" href="{% static 'report_builder/bower_components/angular-ui-tree/dist/angular-ui-tree.min.css' %}">
-    <link rel="stylesheet" href="{% static 'report_builder/css/angular_report.css' %}?v=1">
+    <link rel="stylesheet" href="{% static 'report_builder/css/angular_report.css' %}?v=3">
 
     <script src="{% static 'report_builder/bower_components/moment/moment.js' %}"></script>
     <script src="{% static 'report_builder/bower_components/pikaday/pikaday.js' %}"></script>
@@ -81,6 +81,9 @@
 {% endblock %}
 
 {% block content %}
+    {% if not STATIC_URL %}
+        <p>Please add 'django.core.context_processors.static' to context_processors in settings.py</p>
+    {% endif %}
     <div class="fullheight" ng-app="reportBuilderApp" ng-view>
     </div>
 {% endblock %}

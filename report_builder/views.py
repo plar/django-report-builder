@@ -1,3 +1,7 @@
+import datetime
+import re
+import copy
+import json
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 from django.core.mail import send_mail, EmailMultiAlternatives
@@ -16,7 +20,9 @@ from six import string_types
 
 from .utils import duplicate
 from .models import Report
-from report_utils.mixins import DataExportMixin, generate_filename
+from .mixins import DataExportMixin, generate_filename
+
+User = get_user_model()
 
 import datetime
 import re
@@ -150,7 +156,7 @@ class DownloadFileView(DataExportMixin, View):
 
     def get(self, request, *args, **kwargs):
         report_id = kwargs['pk']
-        file_type = kwargs['filetype']
+        file_type = kwargs.get('filetype')
         if getattr(settings, 'REPORT_BUILDER_ASYNC_REPORT', False):
             from .tasks import report_builder_file_async_report_save
             report_task = report_builder_file_async_report_save.delay(
@@ -243,7 +249,8 @@ class ExportToReport(DownloadFileView, TemplateView):
             return self.process_report(
                 report.id, request.user.pk,
                 to_response=True,
-                queryset=queryset
+                queryset=queryset,
+                file_type="xlsx",
             )
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)

@@ -2,6 +2,10 @@ reportBuilderApp.controller('addCtrl', function($scope, $location, reportService
   $scope.CURRENT_USER = CURRENT_USER;
   $scope.PERMS = PERMS;
 
+  reportService.getContentTypes().then(function(contentTypes) {
+    $scope.contentTypes = contentTypes;
+  });
+
   reportService.options().then(function(options) {
     $scope.options = options.actions.POST;
   });
@@ -120,6 +124,10 @@ reportBuilderApp.service('reportService', ['Restangular',
       return Restangular.all('formats').getList();
     }
 
+    function getContentTypes() {
+      return Restangular.all('contenttypes').getList();
+    }
+
     function options() {
       return reports.options();
     }
@@ -130,6 +138,10 @@ reportBuilderApp.service('reportService', ['Restangular',
 
     function create(data) {
       return reports.post(data);
+    }
+
+    function deleteReport(reportId) {
+      return Restangular.one(path, reportId).remove();
     }
 
     function getList() {
@@ -145,9 +157,11 @@ reportBuilderApp.service('reportService', ['Restangular',
       getRelatedFields: getRelatedFields,
       getFields: getFields,
       getFormats: getFormats,
+      getContentTypes: getContentTypes,
       options: options,
       filterFieldOptions: filterFieldOptions,
       create: create,
+      deleteReport: deleteReport,
       getList: getList,
       getPreview: getPreview
     };
@@ -162,7 +176,11 @@ reportBuilderApp.controller('LeftCtrl', function($scope, $routeParams, $mdSidena
   $scope.PERMS = PERMS;
 
   $scope.currentUserFilter = function(report) {
-    return ( report.user_created.id == CURRENT_USER );
+    if ( report.user_created !== null ){
+      return ( report.user_created.id == CURRENT_USER );
+    } else {
+      return false;
+    }
   };
 
   $scope.notCurrentUserFilter = function(report) {
@@ -239,6 +257,27 @@ reportBuilderApp.controller('ReportDisplayCtrl', function($scope) {
   $scope.deleteField = function(field) {
     field.remove();
   };
+});
+
+reportBuilderApp.controller('ReportOptionsCtrl', function($scope, $location, $window, reportService) {
+  $scope.CURRENT_USER = CURRENT_USER;
+  $scope.PERMS = PERMS;
+  $scope.deleteReport = function(reportId) {
+    var url = $location.url();
+    var absUrl = $location.absUrl();
+    var origin = absUrl.substr(0,absUrl.indexOf(url));
+    reportService.deleteReport(reportId).then(function() {
+      // Getting another ID to redirect to now that our report has been deleted
+      reportService.getList().then(function(list) {
+        if (list[0]) {
+          $window.location.href = origin + '/report/' + list[0].id;
+        } else {
+          $window.location.href = origin;
+        }
+        // $location.path('/report/' + list[0].id, true);
+      });
+    });
+  }
 });
 
 reportBuilderApp.controller('ReportFilterCtrl', function($scope) {

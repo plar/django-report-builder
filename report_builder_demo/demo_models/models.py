@@ -1,6 +1,8 @@
 from django.db import models
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.utils.functional import cached_property
-from custom_field.custom_field import CustomFieldModel
+
+from djmoney.models.fields import MoneyField
 
 
 class Foo(models.Model):
@@ -16,7 +18,7 @@ class FooExclude(Foo):
         exclude = ('char_field2',)
 
 
-class Bar(CustomFieldModel, models.Model):
+class Bar(models.Model):
     char_field = models.CharField(max_length=50, blank=True)
     foos = models.ManyToManyField(Foo, blank=True)
 
@@ -44,6 +46,18 @@ class Bar(CustomFieldModel, models.Model):
     class ReportBuilder:
         extra = ('i_want_char_field', 'i_need_char_field',)
         filters = ('char_field',)
+
+
+class Account(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True, db_index=True)
+    balance = MoneyField(max_digits=10, decimal_places=2, default_currency='USD', blank=True, null=True)
+    budget = MoneyField(max_digits=20, decimal_places=4, default_currency='USD', blank=True, null=True)
+
+    class ReportBuilder:
+        fields = ('budget', 'id', 'name', 'balance',)
+        filters = ('budget',)
+        defaults = ('budget',)
+        exclude = ('balance_currency',)
 
 
 class Place(models.Model):
@@ -87,3 +101,11 @@ class Child(models.Model):
         ('G', 'Green'),
         ('B', 'Blue'),
     ))
+
+
+class Comment(models.Model):
+    """ django-contrib-comments like model """
+    content_type = models.ForeignKey('contenttypes.ContentType')
+    object_pk = models.TextField()
+    content_object = GenericForeignKey(
+        ct_field="content_type", fk_field="object_pk")

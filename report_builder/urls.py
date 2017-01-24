@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required, permission_required
 from rest_framework import routers
@@ -11,13 +11,14 @@ router.register(r'reports', api_views.ReportViewSet)
 router.register(r'report', api_views.ReportNestedViewSet)
 router.register(r'formats', api_views.FormatViewSet)
 router.register(r'filterfields', api_views.FilterFieldViewSet)
+router.register(r'contenttypes', api_views.ContentTypeViewSet)
 
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test
 
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
+   url(r'^report/(?P<pk>\d+)/download_file/$', permission_required('report_builder.view_report')views.DownloadFileView.as_view()), name="report_download_file"),
     url('^report/(?P<pk>\d+)/download_file/(?P<filetype>.+)/$', permission_required('report_builder.view_report')(views.DownloadFileView.as_view()), name="report_download_file"),
     url('^report/(?P<pk>\d+)/check_status/(?P<task_id>.+)/$', permission_required('report_builder.view_report')(views.check_status), name="report_check_status"),
     url('^report/(?P<pk>\d+)/add_star/$', permission_required('report_builder.view_report')(views.ajax_add_star), name="ajax_add_star"),
@@ -30,10 +31,9 @@ urlpatterns = patterns(
     url(r'^api/fields', login_required(api_views.FieldsView.as_view()), name="fields"),
     url(r'^api/report/(?P<report_id>\w+)/generate/', login_required(api_views.GenerateReport.as_view()), name="generate_report"),
     url('^report/(?P<pk>\d+)/$', views.ReportSPAView.as_view(), name="report_update_view"),
-)
+]
 
 if not hasattr(settings, 'REPORT_BUILDER_FRONTEND') or settings.REPORT_BUILDER_FRONTEND:
-    urlpatterns += patterns(
-        '',
+    urlpatterns += [
         url(r'^', login_required(views.ReportSPAView.as_view()), name="report_builder"),
-    )
+    ]

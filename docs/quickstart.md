@@ -2,23 +2,43 @@
 
 ##Requirements
 
-Django 1.7 and Django Rest Framework 3.0. Users of older versions should continue to use the [2.x] branch instead. 
-See setup.py for full requirements list.
+Supported versions:
+
+We follow Django's supported version schedule for new releases. No longer supported versions should use previous versions of report builder.
+
+- Django -  1.8-1.9. Preliminary Django 1.10 (needs testing)
+- Django Rest Framework 3.2 and 3.3. 3.4 is NOT supported at this time. 
+- Python - 3.5 and 2.7.
 
 ##Installation
 
 1. `pip install django-report-builder`
 2. Add `report_builder` to INSTALLED_APPS
 3. Add `url(r'^report_builder/', include('report_builder.urls'))` to url.py url patterns
-3. Ensure `django.core.context_processors.static` and `django.core.context_processors.media` are in `TEMPLATE_CONTEXT_PROCESSORS`
-4. Sync your database. `python manage.py migrate` 
-5. Use Django admin or navigate to /report_builder/
+4. Ensure `django.core.context_processors.static` and `django.core.context_processors.media` are in `TEMPLATE_CONTEXT_PROCESSORS`
+    * Note: For Django 1.8+ template context processors have been moved from `django.core.context_processors` to
+      `django.template.context_processors`. The settings for template context processors have moved from
+      `TEMPLATE_CONTEXT_PROCESSORS` to be part of the template engine specific configuration in `TEMPLATES`,
+      [as described here](https://docs.djangoproject.com/en/1.8/ref/templates/upgrading/#the-templates-settings).
+5. Sync your database. `python manage.py migrate`
+6. Use Django admin or navigate to /report_builder/
+ 
+Django Rest Framework must have Session Authentication enabled. Note this is enabled by default.
+
+```
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        ...
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
+```
 
 ##Settings
 
 ### Include and exclude fields and models
 
-To include a model you've to specify with app your models belong to. If your 'user' model is in the app 'hr' then you can do the following to include it:
+To include a model you've to specify the app your models belong to. If your 'user' model is in the app 'hr' then you can do the following to include it:
 
     REPORT_BUILDER_INCLUDE = ['hr.user'] # Allow only the model user to be accessed
 
@@ -61,7 +81,7 @@ The distinction here is only created if you want to differentiate display fields
 
     REPORT_BUILDER_MODEL_MANAGER = 'on_site' #name of custom model manager to use on all models
 
-You many also set a custom model manager per model. Just add the custom model manager and this property to a model
+You may also set a custom model manager per model. Just add the custom model manager and this property to a model
 
     report_builder_model_manager = on_site #reference to custom model manager to use for a model
 
@@ -83,6 +103,12 @@ Advantages of this option
 - Run a report, close your browser, come back later to a finished report
 - Download the last report that was run instead of regenerating
 - Nicer status messages about report status
+
+
+**Installation**
+
+1. Set up Celery
+2. Set `REPORT_BUILDER_ASYNC_REPORT = True` in settings.py
 
 ### Email notification when file is uploaded
 
@@ -110,10 +136,3 @@ If you're developing your own front-end then you would need the ability to disab
     REPORT_BUILDER_FRONTEND = False
 
 By default the front-end is turned on.
-
-**Installation**
-
-1. Set up Celery
-2. Set `REPORT_BUILDER_ASYNC_REPORT = True` in settings.py
-
-[2.x]: https://github.com/burke-software/django-report-builder/tree/2.x

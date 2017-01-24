@@ -609,7 +609,7 @@ Where do you get the details to add? When you do a POST to get the `/fields` and
 ]
 ```
 
-You literally take one of those elements and append it to the `displayfield_set` array, and PUT it back. Now we have to deal with custom field elements.
+You literally take one of those elements and append it to the `displayfield_set` array, and PUT it back. Now we have to deal with custom field elements. 
 
 ```json
 "displayfield_set": [
@@ -681,9 +681,9 @@ Fields gives you:
 }
 ```
 
-So the only difference in fields is: `report` and `position`. The position can just be calculated by looking at the length of the `displayfield_set` before adding this element and then adding one. The `report` is the ID of the report.
+So the only difference in fields is: `report` and `position`. The position can just be calculated by looking at the length of the `displayfield_set` before adding this element and then adding one. The `report` is the ID of the report. 
 
-This is only in the initial PUT when they add things. If they have customized settings before they save then you have to add new detials.
+This is only in the initial PUT when they add things. If they have customized settings before they save then you have to add new detials. 
 
 They can edit:
 
@@ -691,7 +691,7 @@ They can edit:
 'name', 'sort', 'sort_reverse', 'width', 'aggregate', 'position'
 ```
 
-`sort` is an integer. If you have 3 columns `a`, `b`, `c` the `sort` integer for each is the importance of which is sorted first. So if the sort for `c` is `1` then it will get sorted first, and then `b`, and then `c`.
+`sort` is an integer. If you have 3 columns `a`, `b`, `c` the `sort` integer for each is the importance of which is sorted first. So if the sort for `c` is `1` then it will get sorted first, and then `b`, and then `c`. 
 
 People can rename columns using `name` rather than the default names.
 
@@ -739,7 +739,7 @@ It would give a response like this:
 ]
 ```
 
-These are the fields that are in the model (with the id 9) that have some kind of relationship with an external model.
+These are the fields that are in the model (with the id 9) that have some kind of relationship with an external model. 
 
 If you want to get the fields for the `field_name` foos, which is related to the `parent_model_name` foos then you would do:
 
@@ -787,7 +787,7 @@ This would give you back all the fields (not related_fields as well) for the mod
 ]
 ```
 
-Notice that they have now added a `path`. This is important when you're adding things to `displayfield_set`. You can just append these to `displayfield_set` array and they would work.
+Notice that they have now added a `path`. This is important when you're adding things to `displayfield_set`. You can just append these to `displayfield_set` array and they would work. 
 
 To get the `/related_fields` you do the same thing.
 
@@ -830,7 +830,7 @@ The data it gives you back is:
 ]
 ```
 
-Notice that now they have added a `path`.
+Notice that now they have added a `path`. 
 
 **Add DisplayFields to a report**
 
@@ -1073,7 +1073,7 @@ Where do you get the details to add? When you do a POST to get the `/fields` and
 ]
 ```
 
-You literally take one of those elements and append it to the `displayfield_set` array, and PUT it back. Now we have to deal with custom field elements.
+You literally take one of those elements and append it to the `displayfield_set` array, and PUT it back. Now we have to deal with custom field elements. 
 
 ```json
 "displayfield_set": [
@@ -1145,9 +1145,9 @@ Fields gives you:
 }
 ```
 
-So the only difference in fields is: `report` and `position`. The position can just be calculated by looking at the length of the `displayfield_set` before adding this element and then adding one. The `report` is the ID of the report.
+So the only difference in fields is: `report` and `position`. The position can just be calculated by looking at the length of the `displayfield_set` before adding this element and then adding one. The `report` is the ID of the report. 
 
-This is only in the initial PUT when they add things. If they have customized settings before they save then you have to add new details.
+This is only in the initial PUT when they add things. If they have customized settings before they save then you have to add new details. 
 
 They can edit:
 
@@ -1155,7 +1155,7 @@ They can edit:
 'name', 'sort', 'sort_reverse', 'width', 'aggregate', 'position'
 ```
 
-`sort` is an integer. If you have 3 columns `a`, `b`, `c` the `sort` integer for each is the importance of which is sorted first. So if the sort for `c` is `1` then it will get sorted first, and then `b`, and then `c`.
+`sort` is an integer. If you have 3 columns `a`, `b`, `c` the `sort` integer for each is the importance of which is sorted first. So if the sort for `c` is `1` then it will get sorted first, and then `b`, and then `c`. 
 
 People can rename columns using `name` rather than the default names.
 
@@ -1203,7 +1203,7 @@ It would give a response like this:
 ]
 ```
 
-These are the fields that are in the model (with the id 9) that have some kind of relationship with an external model.
+These are the fields that are in the model (with the id 9) that have some kind of relationship with an external model. 
 
 If you want to get the fields for the `field_name` foos, which is related to the `parent_model_name` foos then you would do:
 
@@ -1294,7 +1294,7 @@ The data it gives you back is:
 ]
 ```
 
-Notice that now they have added a `path`. HOWEVER: here it gives you back a new `model_id` that you need to use for all the levels below.
+Notice that now they have added a `path`. HOWEVER: here it gives you back a new `model_id` that you need to use for all the levels below. 
 
 **Second level**
 
@@ -1331,7 +1331,7 @@ The response you get from that is:
 ]
 ```
 
-So now we can see that the `path` variable has had even more additions.
+So now we can see that the `path` variable has had even more additions. 
 
 **Add FilterFields to a report**
 
@@ -1426,7 +1426,7 @@ Where you would take the values you get from the `/fields` request you made to g
 }
 ```
 
-`filter_value`, and `filter_type` have to be there or the request will fail.
+`filter_value`, and `filter_type` have to be there or the request will fail. 
 
 The response will be:
 
@@ -1463,11 +1463,11 @@ The response will be:
 }
 ```
 
-The `filter_type`s that are possible are returned when you do an OPTIONS on `/filterfields/`. The exact are there is the field `filter_type`. You have to use one of those values as the `filter_type`.
+The `filter_type`s that are possible are returned when you do an OPTIONS on `/filterfields/`. The exact are there is the field `filter_type`. You have to use one of those values as the `filter_type`. 
 
 **Exporting using xlsx**
 
-GET request on `/report_builder/report/<id>/download_file/`. This triggers a celery task to process the report. The response will be:
+GET request on `/report_builder/report/<id>/download_xlsx/`. This triggers a celery task to process the report. The response will be:
 
 ```json
 {

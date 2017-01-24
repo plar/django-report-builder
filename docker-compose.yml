@@ -21,6 +21,6 @@ celery:
     - db
     - redis
   environment:
-    C_FORCE_ROOT: true
+    C_FORCE_ROOT: "true"
   volumes:
     - .:/code

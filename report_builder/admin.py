@@ -37,7 +37,7 @@ class GeneralReportFilter(SimpleListFilter):
 
 
 class ReportAdmin(admin.ModelAdmin):
-    list_display = ('ajax_starred', 'ajax_general_report', 'edit', 'name', 'description', 'root_model', 'created', 'modified', 'user_created', 'download_file', 'copy_report',)
+    list_display = ('ajax_starred', 'ajax_general_report', 'edit', 'name', 'description', 'root_model', 'created', 'modified', 'user_created', 'download_xlsx', 'copy_report',)
     readonly_fields = ['slug', ]
     fields = ['name', 'description', 'root_model', 'slug']
     search_fields = ('name', 'description')
