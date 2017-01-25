@@ -23,8 +23,8 @@ div.col_checkbox {
 }
 
 input[type="text"].small_input {
-  width: 2em;
-g}
+    width: 2em;
+}
 
 .move_trash {
   max-width: 53px;
@@ -80,6 +80,24 @@ body {
     padding-left:0;
 }
 
+#reportapp > section > md-sidenav.md-sidenav-left > md-content md-input-container {
+  margin: 4px 0;
+  width: 100%;
+  height: 40px;
+}
+
+#reportapp > section > md-sidenav.md-sidenav-left h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#reportapp .report-header md-input-container {
+  vertical-align: center;
+  top: 20px;
+  xmargin: 0;
+  width: 70%;
+}
+
 .searchInput {
     margin-top: 5px;
     width: 165px;
@@ -94,7 +112,12 @@ body {
 }
 
 .sidebar-left-search {
-  padding-bottom: 5px;
+  xpadding-bottom: 5px;
+  margin: 0px;
+}
+
+.sidebar-left-search .md-errors-spacer {
+  min-height: 1px;
 }
 
 .sidenav-report-link {
@@ -102,9 +125,20 @@ body {
     border-radius: 0px !important;
 }
 
-.sidenav-report-link .report-meta-data {
-    font-size: 0.8em;
-    color: #bbb;
+
+.reports > md-list-item div.report-name {
+  text-align: left;
+  width: 100%;
+  height: 30px;
+  white-space: nowrap;
+  overflow:hidden !important;
+  text-overflow: ellipsis;
+}
+
+.reports .report-meta-data {
+  font-size: 0.7em;
+  color: #bbb;
+  height: 20px;
 }
 
 .sort-by-label {
@@ -120,7 +154,13 @@ body {
   padding-left: 6px;
 }
 
-#reportapp .md-button {
+md-checkbox {
+  display: inline;
+  margin: 6px;
+}
+
+
+#xxx-reportapp .md-button {
     margin: 0px;
     min-width: 0;
     min-height: 0;
@@ -136,6 +176,14 @@ body {
   border: none;
 }
 
+.options-icon {
+  position: relative;
+  width: 1.5em;
+  padding-right: 10px;
+  top: 4px;
+}
+
+
 #reportapp .md-default-theme label {
   color: #ccc;
 }
@@ -146,4 +194,41 @@ body {
 
 input.long {
   width: 100%;
+}
+
+md-tabs-content-wrapper{
+  top: 60px;
+}
+
+md-content.layout-align-center-center.layout-row h5:first-of-type {
+  margin-top: 20px;
+  padding-bottom: 18px;
+}
+
+
+.field-type {
+  font-size: 60%;
+  background-color: #777;
+  color: white;
+  padding: 1px 4px;
+  margin-right: 8px;
+  border-radius: 2px;
+  float: right;
+}
+
+.field-type-help {
+  background-color: #777;
+  color: white;
+  padding: 1px 4px;
+  margin-right: 8px;
+  border-radius: 2px;
+}
+
+.model-field-button {
+  min-width: 30px !important;
+}
+
+#previewTable {
+  width: 100%;
+  height: 100%;
 }

@@ -199,7 +199,7 @@ reportBuilderApp.controller('LeftCtrl', function($scope, $routeParams, $mdSidena
   }
 })
 
-reportBuilderApp.controller('FieldsCtrl', function($scope, $mdSidenav, reportService) {
+reportBuilderApp.controller('FieldsCtrl', function($scope, $mdSidenav, reportService, $sce) {
   $scope.CURRENT_USER = CURRENT_USER;
   $scope.PERMS = PERMS;
   $scope.load_fields = function(field) {
@@ -238,7 +238,7 @@ reportBuilderApp.controller('FieldsCtrl', function($scope, $mdSidenav, reportSer
   };
 
   $scope.click_field = function(field) {
-    $scope.help_text = '[' + field.field_type + '] ' + field.help_text;
+    $scope.help_text = $sce.trustAsHtml('<div class="field-type-help">' + field.field_type + '</div> ' + field.help_text);
   };
 
   $scope.add_field = function(field) {
@@ -291,6 +291,21 @@ reportBuilderApp.controller('ReportFilterCtrl', function($scope) {
 reportBuilderApp.controller('ReportShowCtrl', function($scope, $window, $http, $timeout, $mdToast, reportService) {
   $scope.CURRENT_USER = CURRENT_USER;
   $scope.PERMS = PERMS;
+
+  $scope.previewTableHeight = function() {
+    var h = document.getElementById("tab-content-4").offsetHeight;
+    if (!h) {
+      h = 600
+    }
+
+    h -= 62; // top menus
+    if (h < 0) {
+      h = 600
+    }
+    console.log('previewTableHeight=', h);
+    return h;
+  }
+
   $scope.getPreview = function() {
     $scope.reportData.statusMessage = null;
     $scope.reportData.refresh = true;

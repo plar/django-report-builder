@@ -4,14 +4,14 @@
         <md-item-content>
             <md-input-container flex>
                 <label>Description</label>
-                <textarea ng-model="report.description"></textarea>
+                <textarea cols="80" rows="5" ng-model="report.description"></textarea>
             </md-input-container>
         </md-item-content>
     </md-list-item>
     <md-list-item>
         <md-item-content>
             <md-checkbox ng-model="report.distinct" aria-label="Is Distinct">
-                Is Distinct (Maybe help reduce duplicates rows) 
+                Is Distinct (Maybe help reduce duplicates rows)
             </md-checkbox>
             Read&nbsp;<a href="//docs.djangoproject.com/en/1.7/ref/models/querysets/#django.db.models.query.QuerySet.distinct">more.</a>
         </md-item-content>
@@ -31,11 +31,11 @@
     <md-list-item ng-if="ASYNC_REPORT === 'True'">
         <md-item-content>
             <a ng-href="{{ report.report_file }}">
-                <img class="options-icon" src="{{ static('report_builder/img/new/download.svg') }}"/>Download existing report 
+                <img class="options-icon" src="{{ static('report_builder/img/new/download.svg') }}"/>Download existing report
             </a>
             &nbsp;generated at {{ report.report_file_creation | date:"MM/dd/yyyy 'at' h:mma" }}
         </md-item-content>
     </md-list-item>
 </md-list>
 </md-content>
-    
+

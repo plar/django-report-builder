@@ -1,4 +1,4 @@
-<md-content class="fullheight" ng-controller="ReportShowCtrl">
+<md-content class="fullheight" ng-controller="ReportShowCtrl" id="reportShowCtrl">
     <div>
         <md-button ng-if="report.user_created == CURRENT_USER || PERMS.is_staff" ng-click="save()">Save</md-button>
         <md-button ng-click="getPreview()">Preview</md-button>
@@ -54,15 +54,27 @@
                 </ul>
             </div>
         </div>
-        <div class="fullheight" style="width: 100% !important; overflow: auto;" ng-if="reportData.refresh == false">
-            <hot-table id="previewTable"
-                columnHeaders="true"
-                settings="htSettings"
-                manualColumnResize="true"
-                stretchH="all"
+        <div id="previewTableContainer" class="fullheight" style="width: 100% !important; overflow: auto;" ng-if="reportData.refresh == false" flex>
+
+            <hot-table settings="{colHeaders: true, contextMenu: ['row_above', 'row_below', 'remove_row'], afterChange: afterChange}"
+                id="previewTable"
+                allow-insert-row="false"
+                allow-insert-col="false"
+                allow-remove-row="false"
+                allow-remove-col="false"
+                column-sorting="true"
+                sort-indicator="true"
+                context-menu="false"
+                manual-column-resize="true"
+                read-only="true"
+                row-headers="true"
+                col-headers="true"
+                min-spare-rows="minSpareRows"
                 columns="reportData.columns"
                 datarows="reportData.items"
-                >
+                stretch-h="all"
+                height="previewTableHeight()"
+                flex>
             </hot-table>
         </div>
     </div>

@@ -1,23 +1,28 @@
 <ng-form layout="row" layout-align="center center">
-  <div class="move_trash" flex="">
-      <img ng-if="report.user_created == CURRENT_USER || PERMS.is_staff" ui-tree-handle="" src="{{ static('report_builder/img/reorder.svg') }}"></img>
-      <img ng-if="report.user_created == CURRENT_USER || PERMS.is_staff" ng-click="deleteField(this)" src="{{ static('report_builder/img/delete.svg') }}"></img>
+  <div class="move_trash" flex="5">
+    <img ng-if="report.user_created == CURRENT_USER || PERMS.is_staff" ui-tree-handle="" src="{{ static('report_builder/img/reorder.svg') }}"></img>
+    <img ng-if="report.user_created == CURRENT_USER || PERMS.is_staff" ng-click="deleteField(this)" src="{{ static('report_builder/img/delete.svg') }}"></img>
   </div>
-  <div flex="" class="caps">
-      <span ng-if="field.path_verbose">
-          ({{ field.path_verbose }}) 
-      </span>
-      {{ field.field_verbose }}
-      [{{ field.field_type }}]
+
+  <div flex="35" class="caps">
+    <span ng-if="field.path_verbose">({{ field.path_verbose }})</span>
+    <span>{{ field.field_verbose }}</span>
+    <span class="field-type">{{ field.field_type }}</span>
   </div>
-  <div flex="">
+
+  <div flex="1">
     <input type="text" ng-model="field.name"></input>
   </div>
-  <div class="col_sort" flex="">
-    <input class="small_input" ng-model="field.sort" type="text" value=""></input>
-    <md-checkbox aria-label="Reverse" ng-model="field.sort_reverse"></md-checkbox>
+
+  <div class="col_sort" flex="1">
+    <input type="text" ng-model="field.sort" class="small_input ng-pristine ng-valid ng-touched" value="" flex></input>
   </div>
-  <div class="col_aggregate" flex="">
+
+  <div class="col_sort" flex="1">
+    <md-checkbox aria-label="Reverse" ng-model="field.sort_reverse" flex></md-checkbox>
+  </div>
+
+  <div class="col_aggregate" flex="1">
     <select ng-model="field.aggregate">
       <option value="" selected="selected">---------</option>
       <option value="Sum">Sum</option>
@@ -27,15 +32,18 @@
       <option value="Min">Min</option>
     </select>
   </div>
-  <div class="col_format" flex="">
+
+  <div class="col_format" flex="1">
     <select ng-model="field.display_format" ng-options="format.id as format.name for format in formats">
-        <option value=""></option>
+      <option value=""></option>
     </select>
   </div>
-  <div class="col_checkbox" flex="">
+
+  <div class="col_checkbox" flex="1">
     <md-checkbox aria-label="Total" ng-model="field.total"></md-checkbox>
   </div>
-  <div class="col_checkbox" flex="">
+
+  <div class="col_checkbox" flex="1">
     <md-checkbox aria-label="Group" ng-model="field.group"></md-checkbox>
   </div>
 </ng-form>
