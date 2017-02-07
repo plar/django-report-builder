@@ -552,9 +552,16 @@ class GetFieldsMixin(object):
             path += '__'
             if direct:
                 try:
-                    new_model = field.related.parent_model
+                    related_field = field.remote_field
                 except AttributeError:
-                    new_model = field.related.model
+                    # Needed for Django < 1.9
+                    related_field = field.related
+
+                try:
+                    new_model = related_field.parent_model
+                except AttributeError:
+                    new_model = related_field.model
+
                 path_verbose = new_model.__name__.lower()
             else:  # Indirect related field
                 new_model = field.related_model

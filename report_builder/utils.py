@@ -204,6 +204,13 @@ def get_model_from_path_string(root_model, path):
                         root_model = field.related.parent_model()
                     except AttributeError:
                         root_model = field.related.model
+                elif hasattr(field, 'remote_field'):  # Django >= 1.10
+                    try:
+                        if field.remote_field:
+                            root_model = field.remote_field.parent_model()
+                    except AttributeError:
+                        if field.remote_field:
+                            root_model = field.remote_field.model
             else:
                 if hasattr(field, 'related_model'):
                     root_model = field.related_model

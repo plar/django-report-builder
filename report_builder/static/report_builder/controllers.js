@@ -302,7 +302,6 @@ reportBuilderApp.controller('ReportShowCtrl', function($scope, $window, $http, $
     if (h < 0) {
       h = 600
     }
-    console.log('previewTableHeight=', h);
     return h;
   }
 
