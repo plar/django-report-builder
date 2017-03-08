@@ -82,9 +82,9 @@ class ReportAdmin(admin.ModelAdmin):
 
     def ajax_general_report(self, obj):
         if obj.general_report:
-            img = static_url + 'admin/img/icon-yes.gif'
+            img = static_url + 'admin/img/icon-yes.svg'
         else:
-            img = static_url + 'admin/img/icon-no.gif'
+            img = static_url + 'admin/img/icon-no.svg'
         return '<a href="javascript:void(0)" onclick="ajax_toggle_general_report(this, \'{0}\')"><img style="" src="{1}"/></a>'.format(
             reverse_lazy('ajax_toggle_general_report', args=[obj.id]),
             img)

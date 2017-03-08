@@ -50,7 +50,6 @@ function csrfSafeMethod(method) {
 }
 
 function ajax_add_star(event, url) {
-
 	// Setup CSRF Token
 	var csrftoken = getCookie('csrftoken');
 	$.ajaxSetup({
@@ -62,14 +61,32 @@ function ajax_add_star(event, url) {
 		}
 	});
 
-    $.post(
-        url,
-	{},
-        function(data){
-	    if (data == 'True' ) {
-		$(event).html('<img style="width: 26px; margin: -6px;" src="/static/report_builder/img/star.png">');
-	    } else {
-		$(event).html('<img style="width: 26px; margin: -6px;" src="/static/report_builder/img/unstar.png">');
-	    }
+    $.post(url,	{}, function(data) {
+       if (data == 'True' ) {
+	      $(event).html('<img style="width: 26px; margin: -6px;" src="/static/report_builder/img/star.png">');
+       } else {
+	      $(event).html('<img style="width: 26px; margin: -6px;" src="/static/report_builder/img/unstar.png">');
+       }
+    });
+}
+
+function ajax_toggle_general_report(event, url) {
+    // Setup CSRF Token
+    var csrftoken = getCookie('csrftoken');
+    $.ajaxSetup({
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
         }
-    );}
+    });
+
+    $.post(url, {}, function(data) {
+        if (data == 'True' ) {
+            $(event).html('<img style="" src="/static/report_builder/img/icon-yes.svg">');
+        } else {
+            $(event).html('<img style="" src="/static/report_builder/img/icon-no.svg">');
+        }
+    });
+}
