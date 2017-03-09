@@ -83,9 +83,11 @@ class ContentTypeViewSet(ReportBuilderViewMixin, viewsets.ReadOnlyModelViewSet):
     Used to populate choices for new report root model.
     """
     permission_classes = (ReportEditPermission,)
-    queryset = ContentType.objects.all()
+
+    # queryset = ContentType.objects.all()
+    # TBD: Should be configurable
+    queryset = ContentType.objects.filter(app_label__in=['captive','company','ownership']).exclude(model__in=['permittedpractice']).all()
     serializer_class = ContentTypeSerializer
-    permission_classes = (IsAdminUser,)
 
 
 class ReportViewSet(ReportBuilderViewMixin, viewsets.ModelViewSet):
